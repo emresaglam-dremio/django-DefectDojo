@@ -253,7 +253,8 @@ class DependencyCheckParser(object):
             if notes == "":
                 notes = "Document on why we are suppressing this vulnerability is missing!"
                 tags.append("no_suppression_document")
-            mitigation = '**This vulnerability is mitigated and/or suppressed:** {}'.format(notes)
+            mitigation = '**This vulnerability is mitigated and/or suppressed:** {}\n'.format(notes)
+            mitigation = mitigation + 'Update {}:{} to at least the version recommended in the description'.format(component_name, component_version)
 
             active = False
             tags.append("suppressed")
@@ -308,6 +309,10 @@ class DependencyCheckParser(object):
 
         if dependencies:
             for dependency in dependencies.findall(namespace + 'dependency'):
+<<<<<<< HEAD
+=======
+                logger.debug('parsing dependency: %s', self.get_field_value(dependency, 'fileName', namespace))
+>>>>>>> efd3a6d2a58fb0ff40686b0533d21fa79bb2c6c7
                 vulnerabilities = dependency.find(namespace + 'vulnerabilities')
                 if vulnerabilities is not None:
                     for vulnerability in vulnerabilities.findall(namespace + 'vulnerability'):
@@ -320,11 +325,19 @@ class DependencyCheckParser(object):
                             finding = self.get_finding_from_vulnerability(dependency, None, suppressedVulnerability, test, namespace)
                             self.add_finding(finding, dupes)
 
+<<<<<<< HEAD
                 relatedDependencies = dependency.find(namespace + 'relatedDependencies')
                 if relatedDependencies:
                     for relatedDependency in relatedDependencies.findall(namespace + 'relatedDependency'):
                         finding = self.get_finding_from_vulnerability(dependency, relatedDependency, vulnerability, test, namespace)
                         self.add_finding(finding, dupes)
+=======
+                    relatedDependencies = dependency.find(namespace + 'relatedDependencies')
+                    if relatedDependencies:
+                        for relatedDependency in relatedDependencies.findall(namespace + 'relatedDependency'):
+                            finding = self.get_finding_from_vulnerability(dependency, relatedDependency, vulnerability, test, namespace)
+                            self.add_finding(finding, dupes)
+>>>>>>> efd3a6d2a58fb0ff40686b0533d21fa79bb2c6c7
 
         return list(dupes.values())
 
